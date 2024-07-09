@@ -40,16 +40,22 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'chat',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
 ]
 
 ROOT_URLCONF = 'chat_app.urls'
@@ -76,12 +82,12 @@ WSGI_APPLICATION = 'chat_app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
@@ -128,52 +134,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # DynamoDB configuration
-# AWS and DynamoDB configuration
-AWS_REGION = 'eu-north-1'
-AWS_ACCESS_KEY_ID = 'your_aws_access_key_id'
-AWS_SECRET_ACCESS_KEY = 'your_aws_secret_access_key'
-# AWS_DYNAMODB_ENDPOINT_URL = 'https://dynamodb.us-east-1.amazonaws.com'
-AWS_DYNAMODB_ENDPOINT_URL = 'http://localhost:8000'
+AWS_ACCESS_KEY_ID = 'AKIA2UC3BZ3G7KTOLLLB'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_REGION = 'eu-west-2'
+# DYNAMODB_ENDPOINT_URL = 'http://localhost:8001'
 
+# Set up the boto3 session to connect to local DynamoDB with dummy credentials
+session = boto3.Session(
+    aws_access_key_id=AWS_ACCESS_KEY_ID,
+    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+    region_name=AWS_REGION,
+    
+)
 
-# DYNAMODB_TABLES = {
-#     'users': {
-#         'table_name': 'users',
-#         'key_schema': [
-#             {'AttributeName': 'id', 'KeyType': 'HASH'},
-#             {'AttributeName': 'username',},
-#             {'AttributeName': 'email',},
-#             {'AttributeName': 'password',},
-#         ],
-#         'attribute_definitions': [
-#             {'AttributeName': 'id', 'AttributeType': 'S'}
-#         ],
-#         'provisioned_throughput': {
-#             'ReadCapacityUnits': 5,
-#             'WriteCapacityUnits': 5
-#         }
-#     },
-#     'chats': {
-#         'table_name': 'chats',
-#         'key_schema': [
-#             {'AttributeName': 'id', 'KeyType': 'HASH'},
-#             {'AttributeName': 'senderId'},
-#             {'AttributeName': 'recipientId'},
-#             {'AttributeName': 'content'},
-#             {'AttributeName': 'seen'},
-#             {'AttributeName': 'updatedAt'},
-#         ],
-#         'attribute_definitions': [
-#             {'AttributeName': 'id', 'AttributeType': 'S'}
-#         ],
-#         'provisioned_throughput': {
-#             'ReadCapacityUnits': 5,
-#             'WriteCapacityUnits': 5
-#         }
-#     }
-# }
-
-
-
-# Create a DynamoDB client
-dynamodb = boto3.resource('dynamodb', region_name=AWS_REGION, endpoint_url=AWS_DYNAMODB_ENDPOINT_URL)
+dynamodb = session.resource('dynamodb')

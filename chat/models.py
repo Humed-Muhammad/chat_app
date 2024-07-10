@@ -27,13 +27,13 @@ class ContentSchema(Schema):
 class User(DynaModel):
     class Table:
         name = 'users'
-        hash_key = 'email'
+        hash_key = 'userId'
         read = 25
         write = 5
 
     class ByUserType(GlobalIndex):
         name = 'by-user-type'
-        hash_key = 'email'
+        hash_key = 'userId'
         range_key = 'username'
         read = 25
         write = 5

@@ -1,5 +1,3 @@
-import boto3
-
 """
 Django settings for chat_app project.
 
@@ -13,6 +11,15 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import boto3
+import bcrypt
+
+#JWT SECRET_KEY
+SECRET_KEY = 'django-insecure-ygr=eee_8n8(xvk5-haamm(mp25i&fw5zqxg(v)1jxs3aq58yg'
+
+# Bcrypt settings
+BCRYPT_ROUNDS = 12  # Adjust the number of rounds as needed
+BCRYPT_SALT = bcrypt.gensalt(BCRYPT_ROUNDS)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -52,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'chat.middleware.JWTAuthenticationMiddleware',
 ]
 
 CORS_ALLOWED_ORIGINS = [

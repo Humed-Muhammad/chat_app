@@ -1,12 +1,11 @@
-import boto3
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 import json
 import bcrypt
-from django.conf import settings
-from chat_app.settings import dynamodb
+from chat_app.settings import dynamodb, SECRET_KEY
 from boto3.dynamodb.conditions import Attr
+import jwt
 
 
 users_table = dynamodb.Table('users')
@@ -16,7 +15,6 @@ def get_user_by_email(email):
         response = users_table.scan(
             FilterExpression=Attr('email').eq(email)
         )
-        print(response)
         items = response.get('Items', [])
         
         if items:
@@ -50,14 +48,18 @@ def login_view(request):
         return JsonResponse({'error': 'Invalid credentials'}, status=400)
     # if 'Item' not in response:
 
-    # user = response['Item']
-    # stored_password = user.get('password', '').encode('utf-8')
+  
+    stored_password = response.get('password', '').encode('utf-8')
+    print(stored_password)
 
-    # # Check if the provided password matches the stored hashed password
-    # if bcrypt.checkpw(password.encode('utf-8'), stored_password):
-    #     # Password is correct, create a session or token here
-        # For simplicity, we'll just return a success message
-        # In a real application, you'd generate a token or start a session
-    return JsonResponse({'success': 'User logged in successfully', 'email': email})
-    # else:
-    #     return JsonResponse({'error': 'Invalid credentials'}, status=400)
+    # Check if the provided password matches the stored hashed password
+    if bcrypt.checkpw(password.encode('utf-8'), stored_password):
+         # Generate JWT token
+        payload = {
+            'email': email,
+            'userType': response.get('userType', 'user')
+        }
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+        return JsonResponse({"token": token})
+    else:
+        return JsonResponse({'error': 'Invalid credentials'}, status=400)

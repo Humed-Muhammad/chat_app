@@ -1,5 +1,10 @@
 import uuid
 from chat.models import User, Chat
+import bcrypt
+from chat_app.settings import BCRYPT_SALT
+
+def hash_password(password): 
+    return bcrypt.hashpw(password.encode('utf-8'), BCRYPT_SALT)
 
 # # Example usage:
 try:
@@ -10,7 +15,7 @@ try:
         'userId': user_id1,
         'username': "bob",
         'email': "bob@gmail.com",
-        'password': "123456",
+        'password': hash_password(password="123456"),
         'userType': "therapist",
     })
 
@@ -18,7 +23,7 @@ try:
         'userId': user_id2,
         'username': "fatima",
         'email': "fatima@gmail.com",
-        'password': "123456",
+        'password': hash_password(password="123456"),
         'userType': "parent",
         'childrenCount': 1
     })

@@ -57,7 +57,8 @@ def login_view(request):
          # Generate JWT token
         payload = {
             'email': email,
-            'userType': response.get('userType', 'user')
+            'userType': response.get('userType'),
+            'userId': response.get('userId')
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
         return JsonResponse({"token": token})

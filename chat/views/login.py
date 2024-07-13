@@ -16,7 +16,7 @@ def get_user_by_email(email):
             FilterExpression=Attr('email').eq(email)
         )
         items = response.get('Items', [])
-        
+        print(items)
         if items:
             return items[0]  # Return the first matching user
         else:
@@ -61,6 +61,6 @@ def login_view(request):
             'userId': response.get('userId')
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-        return JsonResponse({"token": token})
+        return JsonResponse({"token": token, "userId": response.get('userId') })
     else:
         return JsonResponse({'error': 'Invalid credentials'}, status=400)

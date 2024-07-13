@@ -62,34 +62,25 @@ class User(DynaModel):
 class Chat(DynaModel):
     class Table:
         name = 'chats'
-        hash_key = 'chatId'
-        range_key = 'timestamp'
+        hash_key = 'messageId'
         read = 25
         write = 5
-
-    class BySender(GlobalIndex):
-        name = 'by-sender'
-        hash_key = 'senderId'
-        range_key = 'timestamp'
-        read = 25
-        write = 5
-        projection = ProjectAll()
-
-    class ByRecipient(GlobalIndex):
-        name = 'by-recipient'
-        hash_key = 'recipientId'
-        range_key = 'timestamp'
-        read = 25
-        write = 5
-        projection = ProjectAll()
 
     class Schema:
-        chatId = fields.String()
-        timestamp = fields.Integer(load_default=lambda: int(time.time() * 1000))
-        messageId = fields.String(load_default=lambda: str(uuid.uuid4()))
+        messageId = fields.String()
+        createdAt = fields.String()
         senderId = fields.String()
         recipientId = fields.String()
         content = fields.Nested(ContentSchema)
-        readAt = fields.DateTime(allow_none=True)
-        createdAt = fields.DateTime(load_default=datetime.datetime.utcnow())
+        readAt = fields.String(allow_none=True)
 
+
+class WebSocketConnections(DynaModel):
+    class Table:
+        name = 'WebSocketConnections'
+        hash_key = 'connectionId'
+        read = 25
+        write = 5
+
+    class Schema:
+        connectionId = fields.String(required=True)

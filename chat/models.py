@@ -78,9 +78,10 @@ class Chat(DynaModel):
 class WebSocketConnections(DynaModel):
     class Table:
         name = 'WebSocketConnections'
-        hash_key = 'connectionId'
+        hash_key = 'userId'
         read = 25
         write = 5
 
     class Schema:
+        userId = fields.String(required=True)
         connectionId = fields.String(required=True)

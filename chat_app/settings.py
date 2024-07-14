@@ -151,7 +151,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # DynamoDB configuration
 AWS_ACCESS_KEY_ID = 'AKIA2UC3BZ3G7KTOLLLB'
 AWS_SECRET_ACCESS_KEY = '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'
-AWS_REGION = 'eu-west-2'
+AWS_REGION = 'eu-north-1'
 # DYNAMODB_ENDPOINT_URL = 'http://localhost:8001'
 
 # Set up the boto3 session to connect to local DynamoDB with dummy credentials

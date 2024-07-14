@@ -61,6 +61,6 @@ def login_view(request):
             'userId': response.get('userId')
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-        return JsonResponse({"token": token, "userId": response.get('userId') })
+        return JsonResponse({"token": token, "userId": response.get('userId'),  'userType': response.get('userType') })
     else:
         return JsonResponse({'error': 'Invalid credentials'}, status=400)

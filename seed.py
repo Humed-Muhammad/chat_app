@@ -6,8 +6,8 @@ from chat.models import User, Chat, WebSocketConnections
 def create_tables():
     print("Creating tables...")
     # User.Table.create_table()
-    # Chat.Table.create_table()
-    WebSocketConnections.Table.create_table()
+    Chat.Table.create_table()
+    # WebSocketConnections.Table.create_table()
     print("Tables created successfully.")
 
 

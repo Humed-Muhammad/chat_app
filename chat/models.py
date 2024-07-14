@@ -62,11 +62,12 @@ class User(DynaModel):
 class Chat(DynaModel):
     class Table:
         name = 'chats'
-        hash_key = 'messageId'
+        hash_key = 'id'
         read = 25
         write = 5
 
     class Schema:
+        id = fields.String()
         messageId = fields.String()
         createdAt = fields.String()
         senderId = fields.String()

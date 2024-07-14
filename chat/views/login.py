@@ -16,7 +16,7 @@ def get_user_by_email(email):
             FilterExpression=Attr('email').eq(email)
         )
         items = response.get('Items', [])
-        print(items)
+       
         if items:
             return items[0]  # Return the first matching user
         else:

@@ -12,7 +12,7 @@ def jwt_required(view_func):
 
 
 users_table = dynamodb.Table('users')
-def get_user_by_type(user_type):
+def get_user_by_type(user_type:str):
     try:
         response = users_table.scan(
             FilterExpression=Attr('userType').eq(user_type)
@@ -35,21 +35,12 @@ def get_user_by_type(user_type):
 
 chats_table = dynamodb.Table('chats')
 
-def get_chats_by_user(user_id: str, page_size: int = 10) -> list[dict]:
+def get_chats_by_user(messageId: str, size: int = 10, pageNo:int=1) -> list[dict]:
     try:
-        query_kwargs = {
-            'KeyConditionExpression': (
-                Attr('senderId').eq(user_id) |
-                Attr('receiverId').eq(user_id)
-            ),
-            'ProjectionExpression': ','.join([field.name for field in ChatSchema().fields.values()]),
-            'Limit': page_size
-        }
+        response = chats_table.scan(
+            FilterExpression=Attr('messageId').eq(messageId)
+        )
 
-        # if last_evaluated_key:
-        #     query_kwargs['ExclusiveStartKey'] = last_evaluated_key
-
-        response = chats_table.query(**query_kwargs)
         items = response.get('Items', [])
 
         if items:

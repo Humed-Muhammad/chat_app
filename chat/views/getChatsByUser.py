@@ -9,9 +9,11 @@ from django.http import JsonResponse
 def get_chats(request):
     try:
         # Get the user type from the query parameter
-        user_id = request.GET.get('user_id', None)
-        if user_id:
-            users = get_chats_by_user(user_id)
+        messageId = request.GET.get('messageId', None)
+        pageNo = request.GET.get('pageNo', None)
+
+        if messageId:
+            users = get_chats_by_user(messageId, pageNo)
             return JsonResponse({'data': users})
         else:
             return JsonResponse({'error': 'user_id parameter is required'}, status=400)

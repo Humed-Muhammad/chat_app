@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import boto3
 import bcrypt
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 #JWT SECRET_KEY
 SECRET_KEY = 'django-insecure-ygr=eee_8n8(xvk5-haamm(mp25i&fw5zqxg(v)1jxs3aq58yg'
@@ -54,7 +58,7 @@ INSTALLED_APPS = [
     "uuid",
     "dynamorm",
     "jwt",
-    "bcrypt"
+    "bcrypt",
 ]
 
 MIDDLEWARE = [
@@ -149,17 +153,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # DynamoDB configuration
-AWS_ACCESS_KEY_ID = 'AKIA2UC3BZ3G7KTOLLLB'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_REGION = 'eu-north-1'
-# DYNAMODB_ENDPOINT_URL = 'http://localhost:8001'
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_REGION = os.getenv('AWS_REGION')
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
 
 # Set up the boto3 session to connect to local DynamoDB with dummy credentials
 session = boto3.Session(
-    aws_access_key_id=AWS_ACCESS_KEY_ID,
-    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-    region_name=AWS_REGION,
+    aws_access_key_id= AWS_ACCESS_KEY_ID,
+    aws_secret_access_key= AWS_SECRET_ACCESS_KEY,
+    region_name= AWS_REGION,
     
 )
 
 dynamodb = session.resource('dynamodb')
+
+# Get S3 resource
+s3_bucket = session.resource('s3').Bucket(AWS_STORAGE_BUCKET_NAME)

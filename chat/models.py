@@ -1,5 +1,4 @@
 from marshmallow import Schema, fields, validate, validates
-import datetime
 import time
 import uuid
 from dynamorm import DynaModel, GlobalIndex, ProjectAll
@@ -40,11 +39,11 @@ class User(DynaModel):
         projection = ProjectAll()
 
     class Schema:
-        userId = fields.String(load_default=lambda: str(uuid.uuid4()))
+        userId = fields.String()
         username = fields.String(required=True)
         email = fields.String(required=True)
         password = fields.String(required=True)
-        createdAt = fields.DateTime(load_default=datetime.datetime.utcnow)
+        createdAt = fields.String()
         userType = fields.String(required=True, validate=validate.OneOf(['parent', 'therapist']))
         specialization = fields.String(allow_none=True)
         childrenCount = fields.Integer(allow_none=True)

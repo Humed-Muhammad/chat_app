@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'chat',
     'corsheaders',
-    "channels",
     "boto3",
     "marshmallow",
     "uuid",

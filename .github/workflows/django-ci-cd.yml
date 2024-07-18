@@ -2,9 +2,9 @@ name: Django CI/CD
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   test:
@@ -22,7 +22,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     
     steps:
     - uses: actions/checkout@v2
@@ -37,11 +37,9 @@ jobs:
         echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
         ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
           cd ~/chat_app &&
-          git pull origin main &&
+          git pull origin master &&
+          python3 -m venv venv &&
           source venv/bin/activate &&
           pip install -r requirements.txt &&
-          python manage.py migrate &&
-          python manage.py collectstatic --noinput &&
-          sudo systemctl restart gunicorn &&
-          sudo systemctl restart nginx
+          sudo supervisorctl restart chat_app
         '

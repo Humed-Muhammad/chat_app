@@ -73,7 +73,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
+    "https://chat-front.filezillow.com",
 ]
 
 ROOT_URLCONF = 'chat_app.urls'

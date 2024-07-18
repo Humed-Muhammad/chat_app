@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import consumer, getUsers, login, getChatsByUser, uploadFileToS3
+from .views import getUsers, login, getChatsByUser, uploadFileToS3
 
 urlpatterns = [
     path('login', login.login_view, name='login'),

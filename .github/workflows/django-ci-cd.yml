@@ -34,13 +34,12 @@ jobs:
         USER_NAME: ubuntu
       
       run: |
-       echo "$PRIVATE_KEY" | tr -d '\r' > private_key
-       chmod 600 private_key
-       ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
-        cd ~/chat_app &&
-        git pull origin master &&
-        python3 -m venv venv &&
-        source venv/bin/activate &&
-        pip install -r requirements.txt &&
-        sudo supervisorctl restart chat_app
-       '
+        echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+        ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+          cd ~/chat_app &&
+          git pull origin master &&
+          python3 -m venv venv &&
+          source venv/bin/activate &&
+          pip install -r requirements.txt &&
+          sudo supervisorctl restart chat_app
+        '

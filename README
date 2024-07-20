@@ -23,9 +23,11 @@ We've leveraged several AWS services for this application, each chosen for speci
 
 3. **S3 (Simple Storage Service)**: Used for storing image and video content shared in chats. S3 provides durability, availability, and performance for object storage.
 
-4. **Lambda**: Serverless compute service used for background tasks and event-driven processes. It allows us to run code without provisioning servers.
+4. **Lambda**: Serverless compute service used for background tasks and event-driven processes. It allows us to run code without provisioning servers (for working with ApiGateWay).
 
-5. **Supervisor and Gunicorn**: Used to manage our Django application processes on EC2, ensuring high availability and efficient resource utilization.
+5. **ApiGateWay (Socket)**: Real-time communication
+
+6. **Supervisor and Gunicorn**: Used to manage our Django application processes on EC2, ensuring high availability and efficient resource utilization.
 
 ## Data Model
 

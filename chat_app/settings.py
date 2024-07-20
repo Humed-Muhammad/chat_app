@@ -38,8 +38,7 @@ SECRET_KEY = 'django-insecure-ygr=eee_8n8(xvk5-haamm(mp25i&fw5zqxg(v)1jxs3aq58yg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://chat-front.filezillow.com']
-
+ALLOWED_HOSTS = ['chat.filezillow.com', '13.53.174.90']
 
 # Application definition
 

@@ -1,6 +1,7 @@
 from functools import wraps
 from chat_app.settings import dynamodb, s3_bucket, AWS_STORAGE_BUCKET_NAME, AWS_REGION
 from boto3.dynamodb.conditions import Attr
+from datetime import datetime
 
 
 def jwt_required(view_func):
@@ -11,7 +12,9 @@ def jwt_required(view_func):
     return wrapper
 
 
+chats_table = dynamodb.Table('chats')
 users_table = dynamodb.Table('users')
+
 def get_user_by_type(user_type:str):
     try:
         response = users_table.scan(
@@ -33,7 +36,6 @@ def get_user_by_type(user_type:str):
         return None
 
 
-chats_table = dynamodb.Table('chats')
 
 def get_chats_by_user(messageId: str, size: int = 10, pageNo:int=1) -> list[dict]:
     try:
@@ -76,3 +78,23 @@ def upload_file_to_s3(file_obj, file_name="uploaded"):
         # Handle any errors that occurred during the upload
         print(f"Error uploading file to S3: {e}")
         return None
+
+
+
+def chatsHaveBeenRead(ids: list[str]) -> list[dict]:
+    try:
+        updated_chat_Ids = []
+        current_time = datetime.utcnow().isoformat()
+        for chat_id in ids:
+            response = chats_table.update_item(
+                Key={'id': chat_id},
+                UpdateExpression='SET readAt = :readAt',
+                ExpressionAttributeValues={':readAt': current_time},
+                ReturnValues='ALL_NEW'
+            )
+            updated_chat = response.get('Attributes', {})
+            updated_chat_Ids.append(updated_chat.get('id'))
+        return updated_chat_Ids
+    except Exception as e:
+        print(f"Error updating chats: {str(e)}")
+        return []

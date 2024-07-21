@@ -39,6 +39,7 @@ SECRET_KEY = 'django-insecure-ygr=eee_8n8(xvk5-haamm(mp25i&fw5zqxg(v)1jxs3aq58yg
 DEBUG = False
 
 ALLOWED_HOSTS = ['chat.filezillow.com', '13.53.174.90']
+# ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -73,7 +74,6 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "https://chat-front.filezillow.com",
-    "http://localhost:5173"
 ]
 
 ROOT_URLCONF = 'chat_app.urls'
